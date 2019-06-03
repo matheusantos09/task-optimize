@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/test', function () {
+    return response()->json([
+        'error'   => false,
+        'message' => 'Teste OK',
+        'fields'  => request()->all()
+    ]);
+});
