@@ -8,11 +8,15 @@ import Footer from './Footer'
 const MasterLayout = (props) => (
     <div className="App">
         <CssBaseline/>
+
         <Header/>
+
         <Container>
             {props.children}
         </Container>
+
         <Footer/>
+
     </div>
 )
 

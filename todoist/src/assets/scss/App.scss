@@ -1,12 +1,76 @@
-header{
-    .title{
-        text-align: center;
-    }
+header {
+  .title {
+    text-align: center;
+  }
 }
 
-.form-login{
-    .MuiFormControl-root{
-        width: 100%;
-        margin-bottom: 20px;
+.form-login {
+  .MuiFormControl-root {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+.tasks {
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px 20px 70px;
+    background-color: #cecece;
+    border-radius: 70px;
+    margin-bottom: 15px;
+
+    .description {
+      max-width: 800px;
+      word-break: break-word;
+      margin: 0 50px 0 -10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
+
+    .checkmark-group {
+      position: relative;
+
+      input {
+        display: none;
+      }
+
+      .checkmark {
+        background-color: #a2a2a2;
+        width: 60px;
+        height: 50px;
+        margin-top: -14px;
+        margin-left: -63px;
+        margin-bottom: -14px;
+        border-bottom-left-radius: 40px;
+        border-top-left-radius: 40px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      input:checked + .checkmark {
+        background-color: green;
+
+        &:before {
+          position: absolute;
+          display: block;
+          content: url('../img/check.svg');
+          left: 35%;
+          right: 0;
+          height: 23px;
+          width: 24px;
+          fill: #FFF;
+        }
+
+      }
+
+    }
+
+  }
+
 }

@@ -1,102 +1,117 @@
 import React, {Component} from 'react'
-import InputText from '../../partials/InputText'
-import ContainedButton from '../../partials/ContainedButton'
-import axios from 'axios'
-import PubSub from 'pubsub-js'
+import {Link, withRouter} from 'react-router-dom'
+import 'react-toastify/dist/ReactToastify.css'
+import api from '../../../services/api'
+import {login} from '../../../services/auth'
+import {Form, Container} from './Styles'
+// import {ToastContainer, toast} from 'react-toastify'
 
-const url = 'http://127.0.0.1:9999';
-
-class LoginForm extends Component {
+class Login extends Component {
 
     constructor() {
         super();
-        this.state = {
-            email: '',
-            password: ''
-        }
-        this.submitForm = this.submitForm.bind(this);
-        this.setEmail = this.setEmail.bind(this);
-        this.setPassword = this.setPassword.bind(this);
+
+        this.handleSignIn = this.handleSignIn.bind(this);
 
     }
 
-    setEmail(e) {
-        this.setState({
-            email: e.target.value
-        })
+    state = {
+        email: '',
+        password: '',
+        error: ''
     }
 
-    setPassword(e) {
-        this.setState({
-            password: e.target.value
-        })
-    }
+    // notify = (msg) => toast(msg, {
+    //     position: "bottom-right",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    // });
 
-    submitForm(e) {
-        e.preventDefault();
+    handleSignIn = async e => {
+        e.preventDefault()
 
-        axios.post(url + '/test', {
-            'teste': 'teste'
-        })
-            .then(function(response) {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-                return response;
-            })
-            .then(function(response) {
-                console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
+        const {email, password} = this.state
+
+        if (!email || !password) {
+            this.setState({
+                error: 'Por favor preencha a senha e e-mail corretamente'
             });
+        } else {
 
-        // $.ajax({
-        //     url: 'http://cdc-react.herokuapp.com/api/autores',
-        //     contentType: 'application/json',
-        //     dataType: 'json',
-        //     method: 'POST',
-        //     data: JSON.stringify({
-        //         nome: this.state.nome,
-        {/*        email: this.state.email,*/}
-        {/*        senha: this.state.senha*/}
-        {/*    }),*/}
-        //     success: function (novaListagem) {
-        //         PubSub.publish('atualiza-lista-autores',novaListagem);
-        //
-        //         this.setState({
-        //             nome: '',
-        //             email: '',
-        //             senha: ''
-        //         });
-        //
-        //     }.bind(this),
-        //     error: function (resposta) {
-        //         if(resposta.status === 400){
-        //             new TratadorErros().publicaErros(resposta.responseJSON);
-        //         }
-        //     },
-        //     beforeSend: function(){
-        //         PubSub.publish("limpa-erros",{});
-        //     }
-        //
-        // })
+            await api.post('/auth/login', {
+                email, password
+            })
+                .then((response) => {
 
-        alert('SUBMIT');
+                    console.log('teste')
+
+                    if (response.data.error) {
+                        throw response.data;
+                    }
+
+                    login(response.data.token)
+
+                    //@TODO Colocar tooltip aqui para exibir que foi feito login
+                    this.props.history.push({
+                        pathname: '/app',
+                        state: {msgWelcome: 'Login feito com sucesso'}
+                    })
+
+                })
+                .catch((error) => {
+
+                    console.log('CATCH');
+                    console.log(error.response.data.content);
+
+                    var msgError = error.response.data.content ? error.response.data.content : error.content
+                    this.setState({
+                        error: `${msgError}`
+                    })
+
+                });
+
+        }
+
     }
 
     render() {
-
         return (
-            <form onSubmit={this.submitForm} className="form-login">
-                <InputText type="email" name="email" label="E-mail" value={this.state.email} onChange={this.setEmail}/>
-                <InputText type="password" name="password" label="Senha" value={this.state.password} onChange={this.setPassword}/>
-                <ContainedButton text="Entrar" color="primary"/>
-            </form>
-        )
-    }
+            <Container>
+                <Form onSubmit={this.handleSignIn}>
+                    {/* @TODO criar logo */}
 
+                    {this.state.error && <p>{this.state.error}</p>}
+
+                    <input
+                        type="email"
+                        placeholder="Endereço de e-mail"
+                        onChange={e => this.setState({email: e.target.value})}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        onChange={e => this.setState({password: e.target.value})}
+                    />
+                    <button type="submit">Entrar</button>
+                    <hr/>
+                    <Link to="/signup">Criar conta grátis</Link>
+                </Form>
+                {/*<ToastContainer*/}
+                {/*    position="bottom-right"*/}
+                {/*    autoClose={5000}*/}
+                {/*    hideProgressBar={false}*/}
+                {/*    newestOnTop={false}*/}
+                {/*    closeOnClick*/}
+                {/*    rtl={false}*/}
+                {/*    pauseOnVisibilityChange*/}
+                {/*    draggable*/}
+                {/*    pauseOnHover/>*/}
+            </Container>
+        );
+    }
 }
 
-
-export default LoginForm;
+export default withRouter(Login)
