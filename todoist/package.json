@@ -3,11 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.19",
-    "@fortawesome/free-brands-svg-icons": "^5.9.0",
-    "@fortawesome/free-regular-svg-icons": "^5.9.0",
-    "@fortawesome/free-solid-svg-icons": "^5.9.0",
-    "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^4.0.1",
     "@material-ui/icons": "^4.0.1",
     "@material-ui/styles": "^4.0.1",
@@ -25,7 +20,14 @@
     "react-scripts": "3.0.1",
     "react-toastify": "^5.2.1",
     "styled-components": "^4.3.1",
-    "typeface-roboto": "0.0.54"
+    "typeface-roboto": "0.0.54",
+    "chartist": "0.10.1",
+    "classnames": "2.2.6",
+    "history": "4.7.2",
+    "perfect-scrollbar": "1.4.0",
+    "prettier": "1.16.4",
+    "react-chartist": "0.13.3",
+    "react-swipeable-views": "0.13.1"
   },
   "scripts": {
     "start": "react-scripts start",

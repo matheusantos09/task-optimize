@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Auth;
 
 /**
@@ -21,7 +20,6 @@ class LoginController extends Controller
 
     use ValidationTrait;
     use ResponseTrait;
-
 
     /**
      * @param \Illuminate\Http\Request $request
