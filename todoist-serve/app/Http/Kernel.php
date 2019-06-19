@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\SaveLogs;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -19,7 +20,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Barryvdh\Cors\HandleCors::class,
+        \App\Http\Middleware\Cors::class,
+        SaveLogs::class
     ];
 
     /**
@@ -62,7 +64,7 @@ class Kernel extends HttpKernel
         'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified'      => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.auth'      => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-        'jwt.refresh'   => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class
+        'jwt.refresh'   => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
     ];
 
     /**

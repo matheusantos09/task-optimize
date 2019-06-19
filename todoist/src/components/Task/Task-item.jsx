@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import axios from 'axios'
+import axios from 'axios/index'
+
+import Checkbox from '../Button/Checkbox'
 
 const urlApi = 'http://127.0.0.1:9999/api';
 
@@ -36,16 +38,19 @@ class TasksItem extends Component {
         return (
             <li className="task-item">
                 <input type="hidden" value={this.props.status} name="status"/>
-                <label htmlFor={this.props.id} className="checkmark-group">
-                    <input
-                        defaultChecked={this.checkTaskComplete()}
-                        type="checkbox"
-                        name="task"
-                        value={this.props.id}
-                        id={this.props.id}
-                        onClick={this.clickTaskItem}/>
-                    <span className="checkmark"/>
-                </label>
+                {/*<label htmlFor={this.props.id} className="checkmark-group">*/}
+                {/*    <input*/}
+                {/*        defaultChecked={this.checkTaskComplete()}*/}
+                {/*        type="checkbox"*/}
+                {/*        name="task"*/}
+                {/*        value={this.props.id}*/}
+                {/*        id={this.props.id}*/}
+                {/*        onClick={this.clickTaskItem}/>*/}
+                {/*    <span className="checkmark"/>*/}
+                {/*</label>*/}
+
+                <Checkbox/>
+
                 <span className="description">
                     {this.props.description}
                 </span>

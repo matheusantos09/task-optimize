@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
 
-    protected $table = 'tasks';
+    const STATUS_COMPLETE = 'C',
+        STATUS_INCOMPLETE = 'I';
+
+    protected $table    = 'tasks';
+    protected $fillable = ['description', 'status'];
 
 }

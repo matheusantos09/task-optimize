@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import TaskItem from './Task-item'
-import axios from 'axios'
-import pubsub from 'pubsub-js'
-
-const urlApi = 'http://127.0.0.1:9999/api';
+import api from "../../services/api";
+import {ApiRouteList} from '../../routes'
 
 class Tasks extends Component {
 
@@ -17,7 +15,7 @@ class Tasks extends Component {
     }
 
     loadTasks() {
-        axios.get(urlApi + '/tasks')
+        api.get(ApiRouteList.tasks.path)
             .then(function (response) {
                 if (response.data.error) {
                     throw Error(response.data);

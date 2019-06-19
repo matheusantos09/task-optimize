@@ -43,14 +43,13 @@ class LoginController extends Controller
             $token = Auth::guard()->attempt($credentials);
 
             if (!$token) {
-                return $this->responseJson(true, 'Usuário não encontrado',
-                    400);
+                return $this->responseJson(true, 'Usuário não encontrado', 400);
             }
 
             return response()->json([
                 'error'      => false,
                 'token'      => $token,
-                'expires_in' => Auth::guard()->factory()->getTTL() * 60
+                'expires_in' => Auth::guard()->factory()->getTTL() * 1
             ]);
 
         } catch (JWTException $e) {

@@ -20,11 +20,21 @@ Route::post('/users', 'UserController@register');
 //Route::post('/logout', 'AuthController@logout');
 
 Route::group([
-    'prefix' => 'auth'
+    'prefix'     => 'auth',
 ], function () {
 
     Route::post('signup', 'Api\Auth\SignUpController@signUp');
     Route::post('login', 'Api\Auth\LoginController@login');
+    Route::post('recovery', 'Api\Auth\ForgotPasswordController@sendResetEmail');
+    Route::post('reset', 'Api\Auth\ResetPasswordController@resetPassword');
+
+});
+
+
+Route::group([
+    'prefix'     => 'auth',
+    'middleware' => ['jwt.auth']
+], function () {
 
     Route::post('recovery', 'Api\Auth\ForgotPasswordController@sendResetEmail');
     Route::post('reset', 'Api\Auth\ResetPasswordController@resetPassword');
@@ -34,6 +44,11 @@ Route::group([
     Route::get('me', 'Api\Auth\UserController@me');
 
     /* Tasks */
-    Route::get('/tasks', 'TaskController@tasks');
+    Route::get('/task', 'TaskController@tasks');
+    Route::get('/task/completed', 'TaskController@tasksCompleted');
+    Route::post('/task/save', 'TaskController@store');
     Route::post('/change-task', 'TaskController@changeTask');
+
+    /* Timer Events */
+    Route::post('/timer-event', 'TimerEventController@store');
 });

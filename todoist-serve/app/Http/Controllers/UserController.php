@@ -47,6 +47,7 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+
         try {
 
             $this->validator($request->all(), [
@@ -55,17 +56,11 @@ class UserController extends Controller
             ]);
 
             $credentials = $request->only('email', 'password');
-//            dd($request->all(), $credentials);
             $jwtToken    = auth('api')->attempt($credentials);
 
-            dd($jwtToken);
-
-//            if (!$jwtToken =  \JWTAuth::attemps($userAuthentication)) {
             if (!$jwtToken) {
                 return $this->responseJson(true, 'Dados inválidos, tente novamente', 401);
             }
-
-            dd($jwtToken);
 
             return $this->tokenResponseJson($jwtToken, 'Login feito com sucesso');
 
