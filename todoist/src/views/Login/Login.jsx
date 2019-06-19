@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
-import 'react-toastify/dist/ReactToastify.css'
+// import 'react-toastify/dist/ReactToastify.css'
 import api from '../../services/api'
 import {login} from '../../services/auth'
 import {Form, Container} from './Styles'
@@ -43,16 +43,16 @@ class Login extends Component {
             });
         } else {
 
-            await api.post(ApiRouteList.login.path, {
+            await api.post(ApiRouteList.login, {
                 email, password
             })
                 .then((response) => {
 
                     if (response.data.error) {
-                        throw response.data;
+                        throw response;
                     }
 
-                    login(response.data.token)
+                    login(response.data.token, response.data.expires_in)
 
                     //@TODO Colocar tooltip aqui para exibir que foi feito login
 
@@ -63,11 +63,12 @@ class Login extends Component {
 
                 })
                 .catch((error) => {
-
                     console.log('CATCH');
-                    console.log(error.response.data.content);
 
-                    var msgError = error.response.data.content ? error.response.data.content : error.content
+                    var msgError = error.data.content ? error.data.content : error.content
+
+                    console.log(error.data.content);
+
                     this.setState({
                         error: `${msgError}`
                     })

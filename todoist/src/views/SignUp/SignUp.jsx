@@ -34,7 +34,7 @@ class SignUp extends Component {
                 error: 'Preencha todos os dados corretamente'
             })
         } else {
-            await api.post(ApiRouteList.signup.path, {
+            await api.post(ApiRouteList.signup, {
                 name, email, password
             })
                 .then(function (response) {

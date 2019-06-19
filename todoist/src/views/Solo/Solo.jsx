@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import MasterLayout from '../../components/layouts/Master'
+import Tasks from '../../components/Task/Tasks'
 
 class Solo extends Component {
 
@@ -7,7 +8,7 @@ class Solo extends Component {
         return (
             <MasterLayout>
 
-                Tarefas sozinho
+                <Tasks/>
 
             </MasterLayout>
         )

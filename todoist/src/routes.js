@@ -9,37 +9,65 @@ import App from './views/Painel/Painel'
 import Solo from './views/Solo/Solo'
 import Grupo from './views/Grupo/Grupo'
 
+const AppNameRoute = '/app';
+
 export const RouteList = {
     login: {
         path: '/',
         name: 'Login'
+    },
+    logout: {
+        path: '/logout',
+        name: 'Logout'
     },
     signup: {
         path: '/signup',
         name: 'Signup'
     },
     painel: {
-        path: '/app',
+        path: AppNameRoute + '',
         name: 'Painel'
     },
     painelSolo: {
-        path: '/app/solo',
-        name: 'Solo'
+        path: AppNameRoute + '/solo',
+        name: 'Solo',
+    },
+    notifications: {
+        path: AppNameRoute + '/solo/notifications',
+        name: 'Notificações'
     },
     painelGrupo: {
-        path: '/app/grupo',
+        path: AppNameRoute + '/grupo',
         name: 'Grupo'
     },
 }
 
 export const ApiRouteList = {
-    login: {
-        path: '/auth/login'
-    },
-    signup: {
-        path: '/auth/signup'
-    }
+    login: '/auth/login',
+    signup: '/auth/signup',
+    tasks: '/auth/task',
+    completedTasks: '/auth/task/completed',
+    changeStatus: '/auth/change-task',
+    saveTask: '/auth/task/save',
+    eventTimer: '/auth/timer-event'
 }
+
+export const MenuSolo = [
+    {
+        path: AppNameRoute + '/solo/notifications',
+        name: 'Notificações',
+        icon: '<InboxIcon />'
+    },
+    {
+        path: AppNameRoute + '/grupo',
+        name: 'Grupo'
+    },
+    {
+        path: '/logout',
+        name: 'Logout'
+    },
+]
+
 
 const PrivateRoute = ({component: Component, ...rest}) => (
     <Route

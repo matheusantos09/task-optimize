@@ -5,16 +5,11 @@ import './assets/scss/App.scss'
 /* Import fonts and styles */
 import 'typeface-roboto'
 import 'normalize.css'
-
-// import MasterLayout from './components/layouts/Master'
-// import LoginForm from './components/pages/Login/Login'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
     return (
-        //<MasterLayout>
-            <Routes />
-            // <LoginForm/>
-        // </MasterLayout>
+        <Routes/>
     );
 }
 

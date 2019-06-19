@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
-import axios from 'axios/index'
-
-import Checkbox from '../Button/Checkbox'
-
-const urlApi = 'http://127.0.0.1:9999/api';
+import api from "../../services/api";
+import {ApiRouteList} from '../../routes'
+import PubSub from 'pubsub-js'
 
 class TasksItem extends Component {
 
@@ -19,14 +17,19 @@ class TasksItem extends Component {
 
     clickTaskItem() {
 
-        axios.post(urlApi + '/change-task', {
+        api.post(ApiRouteList.changeStatus, {
             id: this.props.id,
             status: this.props.status
         }).then(function (response) {
+
             if (response.data.error) {
                 throw Error(response.data);
             }
-        }.bind(this))
+
+            PubSub.publish('task-list-incomplete', response.data.incompleteTask);
+            PubSub.publish('task-list-complete', response.data.completeTask);
+
+        })
             .catch(function (error) {
                 console.log('CATCH');
                 console.log(error);
@@ -38,22 +41,21 @@ class TasksItem extends Component {
         return (
             <li className="task-item">
                 <input type="hidden" value={this.props.status} name="status"/>
-                {/*<label htmlFor={this.props.id} className="checkmark-group">*/}
-                {/*    <input*/}
-                {/*        defaultChecked={this.checkTaskComplete()}*/}
-                {/*        type="checkbox"*/}
-                {/*        name="task"*/}
-                {/*        value={this.props.id}*/}
-                {/*        id={this.props.id}*/}
-                {/*        onClick={this.clickTaskItem}/>*/}
-                {/*    <span className="checkmark"/>*/}
-                {/*</label>*/}
-
-                <Checkbox/>
+                <label htmlFor={this.props.id} className="checkmark-group">
+                    <input
+                        defaultChecked={this.checkTaskComplete()}
+                        type="checkbox"
+                        name="task"
+                        value={this.props.id}
+                        id={this.props.id}
+                        onClick={this.clickTaskItem}/>
+                    <span className="checkmark"/>
+                </label>
 
                 <span className="description">
                     {this.props.description}
                 </span>
+
                 <div>
                     <span>EDITAR</span>
                     <span>DELETAR</span>
