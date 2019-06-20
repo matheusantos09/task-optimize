@@ -8,6 +8,7 @@ import Login from './views/Login/Login'
 import App from './views/Painel/Painel'
 import Solo from './views/Solo/Solo'
 import Grupo from './views/Grupo/Grupo'
+import Configuration from './views/User/Configuration'
 
 const AppNameRoute = '/app';
 
@@ -40,6 +41,10 @@ export const RouteList = {
         path: AppNameRoute + '/grupo',
         name: 'Grupo'
     },
+    configuration: {
+        path: AppNameRoute + '/user',
+        name: 'Configurações'
+    },
 }
 
 export const ApiRouteList = {
@@ -53,6 +58,10 @@ export const ApiRouteList = {
 }
 
 export const MenuSolo = [
+    {
+        path: AppNameRoute + '/user',
+        name: 'Sobre mim'
+    },
     {
         path: AppNameRoute + '/solo/notifications',
         name: 'Notificações',
@@ -90,6 +99,7 @@ const Routes = () => (
             <PrivateRoute exact path={RouteList.painel.path} component={App}/>
             <PrivateRoute exact path={RouteList.painelSolo.path} component={Solo}/>
             <PrivateRoute exact path={RouteList.painelGrupo.path} component={Grupo}/>
+            <PrivateRoute exact path={RouteList.configuration.path} component={Configuration}/>
             <Route path='*' component={() => <h1>Página não encontrada</h1>}/>
         </Switch>
     </BrowserRouter>
