@@ -43,6 +43,8 @@ class Login extends Component {
             });
         } else {
 
+            //@TODO melhorar validações para o login
+
             await api.post(ApiRouteList.login, {
                 email, password
             })
@@ -65,13 +67,25 @@ class Login extends Component {
                 .catch((error) => {
                     console.log('CATCH');
 
-                    var msgError = error.data.content ? error.data.content : error.content
+                    if (typeof error.data !== 'undefined') {
 
-                    console.log(error.data.content);
+                        console.log('tete');
 
-                    this.setState({
-                        error: `${msgError}`
-                    })
+                        var msgError = error.data.content ? error.data.content : error.content
+
+                        console.log(error.data.content);
+
+                        this.setState({
+                            error: `${msgError}`
+                        })
+
+                    } else {
+
+                        this.setState({
+                            error: 'Estamos com problema para autenticar você tente novamente mais tarde'
+                        })
+
+                    }
 
                 });
 
