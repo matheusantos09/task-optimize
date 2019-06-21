@@ -54,7 +54,11 @@ export const ApiRouteList = {
     completedTasks: '/auth/task/completed',
     changeStatus: '/auth/change-task',
     saveTask: '/auth/task/save',
-    eventTimer: '/auth/timer-event'
+    eventTimer: '/auth/timer-event',
+    saveConfigUser: '/auth/user/save',
+    loadConfigUser: '/auth/user/load',
+    startSnooze: '/auth/user/snooze/start',
+    endSnooze: '/auth/user/snooze/end',
 }
 
 export const MenuSolo = [
@@ -65,7 +69,10 @@ export const MenuSolo = [
     {
         path: AppNameRoute + '/solo/notifications',
         name: 'Notificações',
-        icon: '<InboxIcon />'
+    },
+    {
+        path: AppNameRoute + '/solo',
+        name: 'Solo'
     },
     {
         path: AppNameRoute + '/grupo',

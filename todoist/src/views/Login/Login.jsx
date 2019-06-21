@@ -66,6 +66,7 @@ class Login extends Component {
                 })
                 .catch((error) => {
                     console.log('CATCH');
+                    console.log(error);
 
                     if (typeof error.data !== 'undefined') {
 

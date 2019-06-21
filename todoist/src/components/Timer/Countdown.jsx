@@ -85,7 +85,8 @@ class Timer extends Component {
             cycleEvent: 0,
             lines: lines,
             stage: 1,
-            pause: false
+            pause: false,
+            firstSnooze: true
         }
 
         this.handleFinish = this.handleFinish.bind(this);
@@ -123,10 +124,19 @@ class Timer extends Component {
         switch (event) {
             case 'start':
                 this.sendEventCycle('START');
+                if (this.state.firstSnooze) {
+
+                    api.post(ApiRouteList.startSnooze);
+
+                    this.setState({
+                        firstSnooze: false
+                    })
+                }
                 break;
 
             case 'pause':
                 this.sendEventCycle('PAUSE');
+                api.post(ApiRouteList.endSnooze);
                 break;
 
             case 'stop':
@@ -175,9 +185,13 @@ class Timer extends Component {
 
             showNotification('Hora de descansar', 'Aproveite esse tempo para ver tudo que foi feito e preparar as próximas atividades', 'pause');
 
+            api.post(ApiRouteList.endSnooze);
+
         } else {
 
             showNotification('Vamos ao trabalho', 'Agora vamos focar em nossas atividades');
+
+            api.post(ApiRouteList.startSnooze);
 
         }
 
