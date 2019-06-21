@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 /**
- * Trait ResponseTrait
+ * Traits ResponseTrait
  *
  * @package App\Traits
  */

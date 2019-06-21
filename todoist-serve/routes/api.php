@@ -1,26 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-//Route::post('/login', 'UserController@login');
 Route::post('/users', 'UserController@register');
 
-//Route::post('/register', 'AuthController@register');
-//Route::post('/login', 'AuthController@login');
-//Route::post('/logout', 'AuthController@logout');
-
 Route::group([
-    'prefix'     => 'auth',
+    'prefix' => 'auth',
 ], function () {
 
     Route::post('signup', 'Api\Auth\SignUpController@signUp');
@@ -41,7 +24,6 @@ Route::group([
 
     Route::post('logout', 'Api\Auth\LogoutController@logout');
     Route::post('refresh', 'Api\Auth\RefreshController@refresh');
-    Route::get('me', 'Api\Auth\UserController@me');
 
     /* Tasks */
     Route::get('/task', 'TaskController@tasks');
@@ -51,4 +33,10 @@ Route::group([
 
     /* Timer Events */
     Route::post('/timer-event', 'TimerEventController@store');
+
+    /* User */
+    Route::get('/user/load', 'UserController@loadConfigs');
+    Route::post('/user/save', 'UserController@saveConfigs');
+    Route::post('/user/snooze/start', 'UserController@startSnooze');
+    Route::post('/user/snooze/end', 'UserController@endSnooze');
 });

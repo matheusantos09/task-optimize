@@ -25,7 +25,7 @@ class TraitMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'Trait';
+    protected $type = 'Traits';
 
     /**
      * Get the stub file for the generator.

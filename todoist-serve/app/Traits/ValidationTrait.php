@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Trait ValidationTrait
+ * Traits ValidationTrait
  *
  * @package App\Traits
  */
