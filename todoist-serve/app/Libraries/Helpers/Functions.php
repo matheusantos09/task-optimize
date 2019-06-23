@@ -68,4 +68,38 @@ class Functions
         return strtr($message, $replace);
     }
 
+    /**
+     * @param \Illuminate\Http\UploadedFile $arquivo
+     * @param                               $path
+     * @param string                        $visibility
+     * @param bool                          $fileName
+     *
+     * @return false|string
+     * @throws \Exception
+     */
+    public static function uploadImage(
+        \Illuminate\Http\UploadedFile $arquivo,
+        $path,
+        $visibility = 'public',
+        $fileName = false
+    ) {
+        $configs = [];
+
+        if ($visibility === 'public') {
+            $configs = ['CacheControl' => 'public, max-age=2592000', 'visibility' => 'public'];
+        }
+
+        if (!$fileName) {
+            $fileName = md5(time() . $arquivo->getFileName()) . '.' . $arquivo->getClientOriginalExtension();
+        }
+
+        $path = $arquivo->storeAs($path, $fileName, $configs);
+
+        if (!$path) {
+            throw new \Exception('Error Upload Image');
+        }
+
+        return $path;
+    }
+
 }

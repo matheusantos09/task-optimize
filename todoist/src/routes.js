@@ -63,7 +63,8 @@ export const ApiRouteList = {
     loadConfigUser: '/auth/user/load',
     startSnooze: '/auth/user/snooze/start',
     endSnooze: '/auth/user/snooze/end',
-    randomPhase: '/auth/phase/random'
+    randomPhase: '/auth/phase/random',
+    userUploadImage: '/auth/user/upload'
 }
 
 export const MenuSolo = [

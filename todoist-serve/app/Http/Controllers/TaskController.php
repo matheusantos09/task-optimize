@@ -216,7 +216,7 @@ class TaskController extends Controller
 
             DB::rollBack();
 
-            return $this->responseJson(true, 'Não foi possível remover a atividade', 500);
+            return $this->responseJson(true, 'Não foi possível remover a atividade', 500, $e);
         }
 
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Helpers\Functions;
 use App\Libraries\Slack\Slack;
 use App\Traits\ResponseTrait;
 use App\Traits\ValidationTrait;
@@ -110,10 +111,11 @@ class UserController extends Controller
                 'slack_token'           => $user->slack_token,
                 'notification_email'    => $user->notification_email,
                 'notification_news'     => $user->notification_news,
+                'image'                 => $user->image,
             ]);
 
         } catch (\Exception $e) {
-            return $this->responseJson(true, 'Não foi possível carregar suas informações', 500);
+            return $this->responseJson(true, 'Não foi possível carregar suas informações', 500, $e);
         }
     }
 
@@ -208,8 +210,33 @@ class UserController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return $this->responseJson(true, 'Não foi possível desativar o modo Snooze do Slack', 500);
+            return $this->responseJson(true, 'Não foi possível desativar o modo Snooze do Slack', 500, $e);
         }
+    }
+
+    public function uploadImage(Request $request)
+    {
+        try {
+            $user = \JWTAuth::parseToken()->toUser();
+
+            $this->validator($request->all(), [
+                'image' => 'required|mimes:jpg,png,jpeg,gif'
+            ]);
+dd($request->all());
+            $image = Functions::uploadImage($request->file('image'), 'users');
+
+            $user->image = $image;
+            $user->save();
+
+            return response()->json([
+                'error' => false,
+                'image' => $image
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->responseJson(true, 'Não foi possível fazer o upload da sua foto, tente novamente', 500, $e);
+        }
+
     }
 
 }

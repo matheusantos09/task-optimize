@@ -41,6 +41,7 @@ Route::group([
     Route::post('/user/save', 'UserController@saveConfigs');
     Route::post('/user/snooze/start', 'UserController@startSnooze');
     Route::post('/user/snooze/end', 'UserController@endSnooze');
+    Route::post('/user/upload', 'UserController@uploadImage');
 
     /* Frases */
     Route::post('/phase/random', 'FraseController@random');

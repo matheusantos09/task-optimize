@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Traits\ResponseTrait;
 use App\Traits\ValidationTrait;
+use App\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
 use App\Http\Controllers\Controller;

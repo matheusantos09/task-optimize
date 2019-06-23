@@ -14,7 +14,10 @@ import {
 } from '@material-ui/core'
 import api from "../../services/api";
 import {ApiRouteList} from "../../routes";
-import {notify, ToastContainerCustom} from "../../components/Notification/Notify";
+import {notify, ToastContainerCustom} from "../../components/Notification/Notify"
+import imagePerfilDefault from '../../assets/img/user-perfil.svg'
+import loader from '../../assets/img/loader.svg'
+import Divider from "@material-ui/core/Divider";
 
 class Configuration extends Component {
 
@@ -23,6 +26,8 @@ class Configuration extends Component {
 
         this.handleOnChange = this.handleOnChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleOnChangeFile = this.handleOnChangeFile.bind(this)
+        this.handleSubmitUpload = this.handleSubmitUpload.bind(this)
     }
 
     state = {
@@ -35,6 +40,7 @@ class Configuration extends Component {
         slack_token: '',
         notification_email: '',
         notification_news: '',
+        image: loader,
     }
 
     componentDidMount() {
@@ -55,6 +61,7 @@ class Configuration extends Component {
                     slack_token: response.data.slack_token,
                     notification_email: response.data.notification_email,
                     notification_news: response.data.notification_news,
+                    image: response.data.image,
                 })
 
             }.bind(this))
@@ -129,12 +136,91 @@ class Configuration extends Component {
 
     }
 
+    handleOnChangeFile(event) {
+
+        this.setState({
+            image: loader,
+        })
+
+        this.handleSubmitUpload(event.target.files[0])
+
+    }
+
+    handleSubmitUpload(file) {
+//@TODO FAZER UPLOAD DA FOTO DE PERFIL DO USUÀRIO
+        const formData = new FormData()
+        formData.append('image', file, file.name)
+
+        api.post(ApiRouteList.userUploadImage, {
+            image: formData
+        }, {
+            onUploadProgress: progressEvent => {
+                console.log('Progress: ' + Math.round(progressEvent.load / progressEvent.total * 100))
+            }
+        })
+            .then(function (response) {
+                if (response.data.error) {
+                    throw response;
+                }
+
+                this.setState({
+                    image: response.data.image
+                })
+
+                notify({
+                    msg: 'Upload feito com sucesso',
+                    time: 3000
+                })
+
+            }.bind(this))
+            .catch(function (error) {
+                console.log('CATCH');
+                console.log(error);
+
+                this.setState({
+                    image: imagePerfilDefault,
+                })
+
+                notify({
+                    status: 'error',
+                    // msg: error.data.content,
+                    msg: 'Não foi possível fazer o upload da sua foto',
+                    time: 3000
+                })
+
+            }.bind(this));
+
+    }
+
     render() {
         return (
             <MasterLayout>
+
+                <form>
+                    <Grid container spacing={10}>
+
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+
+                            <div className="upload-image">
+                                <div className="box-image">
+                                    <img src={this.state.image} alt="Imagem padrão do usuário"/>
+                                </div>
+                                <div className="box">
+                                    <div className="text">Altere seu foto de perfil</div>
+                                    <div>
+                                        <label htmlFor="image">Faça upload da image</label>
+                                        <input type="file" name="image" id="image"
+                                               onChange={(event) => this.handleOnChangeFile(event)}/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </Grid>
+                    </Grid>
+                </form>
+
                 <form onSubmit={this.handleSubmit}>
-                    <Grid container spacing={10}
-                    >
+                    <Grid container spacing={10}>
 
                         <Grid item xs={12} sm={12} md={6}>
                             <FormGroup>
@@ -198,7 +284,7 @@ class Configuration extends Component {
                                 <FormControlLabel
 
                                     control={
-                                        <Grid component="label" container spacing={1} alignItems="center">
+                                        <Grid component="label" container spacing={1} alignItems="center" justify={"center"}>
                                             <Grid item>Não</Grid>
                                             <Grid item>
                                                 <Switch
@@ -234,7 +320,10 @@ class Configuration extends Component {
                             </FormGroup>
                         </Grid>
 
-                        <hr/>
+                        <Grid item xs={12} sm={12} md={12}>
+                            <Divider />
+                        </Grid>
+
                         <Grid item xs={12} sm={12} md={12}>
                             <Typography>Notificações</Typography>
                         </Grid>
@@ -243,7 +332,7 @@ class Configuration extends Component {
                             <FormGroup>
                                 <FormControlLabel
                                     control={
-                                        <Grid component="label" container spacing={1} alignItems="center">
+                                        <Grid component="label" container spacing={1} alignItems="center" justify={"center"}>
                                             <Grid item>Não</Grid>
                                             <Grid item>
                                                 <Switch
@@ -259,14 +348,15 @@ class Configuration extends Component {
                                     label="Receba e-mail com suas tarefas e progressos"
                                     labelPlacement="top"
                                 />
-                                <FormHelperText>*Função ainda não disponivel, desculpe, estamos trabalhando para implementar isso.</FormHelperText>
+                                <FormHelperText>*Função ainda não disponivel, desculpe, estamos trabalhando para
+                                    implementar isso.</FormHelperText>
                             </FormGroup>
                         </Grid>
                         <Grid item xs={12} sm={12} md={6}>
                             <FormGroup>
                                 <FormControlLabel
                                     control={
-                                        <Grid component="label" container spacing={1} alignItems="center">
+                                        <Grid component="label" container spacing={1} alignItems="center" justify={"center"}>
                                             <Grid item>Não</Grid>
                                             <Grid item>
                                                 <Switch
@@ -281,11 +371,12 @@ class Configuration extends Component {
                                     label="Recebas nossas novas atualizações da plataforma"
                                     labelPlacement="top"
                                 />
-                                <FormHelperText>*Função ainda não disponivel, assim que os novos recursos estiverem prontos você será notificado.</FormHelperText>
+                                <FormHelperText>*Função ainda não disponivel, assim que os novos recursos estiverem
+                                    prontos você será notificado.</FormHelperText>
                             </FormGroup>
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={12}>
+                        <Grid item xs={12} sm={12} md={12} className="button-save-config">
                             <Button
                                 type="submit"
                                 variant="contained"
