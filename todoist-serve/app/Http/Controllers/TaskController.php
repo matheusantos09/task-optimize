@@ -55,6 +55,34 @@ class TaskController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
+    public function tasksList()
+    {
+
+        try {
+
+            $user = \JWTAuth::parseToken()->toUser();
+
+            $tasks = $user->task()
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            return response()->json([
+                'error'   => false,
+                'content' => $tasks
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error'   => true,
+                'content' => 'Error: ' . $e->getMessage()
+            ]);
+        }
+
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function tasksCompleted()
     {
 

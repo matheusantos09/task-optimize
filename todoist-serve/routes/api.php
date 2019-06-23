@@ -27,6 +27,7 @@ Route::group([
 
     /* Tasks */
     Route::get('/task', 'TaskController@tasks');
+    Route::get('/task-list', 'TaskController@tasksList');
     Route::get('/task/completed', 'TaskController@tasksCompleted');
     Route::post('/task/save', 'TaskController@store');
     Route::put('/task/edit/{id}', 'TaskController@update');
@@ -44,6 +45,9 @@ Route::group([
     Route::post('/user/upload', 'UserController@uploadImage');
 
     /* Frases */
-    Route::post('/phase/random', 'FraseController@random');
+    Route::post('/phase/random', 'PhaseController@random');
+
+    /* Notifications */
+    Route::resource('/notification', 'NotificationController');
 
 });

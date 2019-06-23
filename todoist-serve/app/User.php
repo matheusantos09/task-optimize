@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Notification;
 use App\Models\Task;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -93,4 +94,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Task::class, 'user_id', 'id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notification()
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
+
 }
