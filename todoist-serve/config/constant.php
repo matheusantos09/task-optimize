@@ -2,6 +2,10 @@
 
 return [
 
-    'APP_DEBUG' => env('APP_DEBUG')
+    'APP_DEBUG' => env('APP_DEBUG'),
+
+    'telescope_email_allowed' => [
+        'teste@teste.com.br',
+    ]
 
 ];

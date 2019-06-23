@@ -4,6 +4,7 @@ import api from "../../services/api";
 import {ApiRouteList} from "../../routes";
 import {showNotification} from '../Notification/WebNotification'
 import CounterCycleTimer from './CounterCycleTimer'
+import {PlayCircleFilledRounded, PauseCircleFilledRounded} from '@material-ui/icons'
 
 function convertMintoMs(min) {
     return (min * 60) * 1000;
@@ -86,7 +87,8 @@ class Timer extends Component {
             lines: lines,
             stage: 1,
             pause: false,
-            firstSnooze: true
+            firstSnooze: true,
+            startIcon: true
         }
 
         this.handleFinish = this.handleFinish.bind(this);
@@ -124,6 +126,11 @@ class Timer extends Component {
         switch (event) {
             case 'start':
                 this.sendEventCycle('START');
+
+                this.setState({
+                    startIcon: false
+                })
+
                 if (this.state.firstSnooze) {
 
                     api.post(ApiRouteList.startSnooze);
@@ -136,16 +143,30 @@ class Timer extends Component {
 
             case 'pause':
                 this.sendEventCycle('PAUSE');
+
+                this.setState({
+                    startIcon: true
+                })
+
                 api.post(ApiRouteList.endSnooze);
                 break;
 
             case 'stop':
                 this.sendEventCycle('STOP');
+
+                this.setState({
+                    startIcon: true
+                })
+
                 break;
 
             case 'reset':
                 this.sendEventCycle('RESET');
                 break;
+
+            default:
+                console.log('Default')
+                break
         }
 
     }
@@ -224,7 +245,6 @@ class Timer extends Component {
 
         return (
             <div>
-                <CounterCycleTimer lines={this.state.lines} stage={this.state.stage} pause={this.state.pause}/>
                 <CountDown
                     from={this.state.counter}
                     updateEvery={1000}
@@ -243,11 +263,12 @@ class Timer extends Component {
                                     max={this.state.counterInit}
                                 >
                                 </progress>
-                                <h1>{minutes}:{seconds}</h1>
+                                <h1 className={this.state.startIcon ? '' : 'start-title'}>{minutes}:{seconds}</h1>
                                 <div className='list-buttons'>
                                     <button
                                         ref={input => this.inputStart = input}
-                                        onClick={counter.playPause}>Play/Pause Countdown
+                                        onClick={counter.playPause}>
+                                        {this.state.startIcon ? <PlayCircleFilledRounded/> : <PauseCircleFilledRounded/>}
                                     </button>
                                     {/*<button*/}
                                     {/*    ref={input => this.inputStop = input}*/}
@@ -263,6 +284,7 @@ class Timer extends Component {
                         )}
                     </CountdownContext.Consumer>
                 </CountDown>
+                <CounterCycleTimer lines={this.state.lines} stage={this.state.stage} pause={this.state.pause}/>
             </div>
         )
     }

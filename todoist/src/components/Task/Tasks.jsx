@@ -5,6 +5,8 @@ import {ApiRouteList} from '../../routes'
 import PubSub from 'pubsub-js'
 import {notify, ToastContainerCustom} from "../Notification/Notify"
 import Timer from '../Timer/Countdown'
+import {TextField, FormGroup, FormControl, Grid} from "@material-ui/core"
+import Divider from "@material-ui/core/Divider";
 
 class Tasks extends Component {
 
@@ -22,11 +24,11 @@ class Tasks extends Component {
 
     }
 
-    loadTasks() {
+    loadTasksIncomplete() {
         api.get(ApiRouteList.tasks)
             .then(function (response) {
                 if (response.data.error) {
-                    throw Error(response.data);
+                    throw response;
                 }
 
                 this.setState({
@@ -50,11 +52,13 @@ class Tasks extends Component {
                 })
 
             });
+    }
 
+    loadTaskComplete(){
         api.get(ApiRouteList.completedTasks)
             .then(function (response) {
                 if (response.data.error) {
-                    throw Error(response.data);
+                    throw response;
                 }
                 this.setState({
                     completedTasks: response.data.content
@@ -70,6 +74,12 @@ class Tasks extends Component {
                     time: 3000
                 })
             });
+    }
+
+    loadTasks() {
+        this.loadTasksIncomplete()
+
+        this.loadTaskComplete()
     }
 
     saveTask(e) {
@@ -92,11 +102,11 @@ class Tasks extends Component {
             }.bind(this))
             .catch(function (error) {
                 console.log('CATCH');
-                console.log(error.data.content);
+                console.log(error);
 
                 notify({
                     status: 'error',
-                    msg: 'Ocorreu um erro ao carregar suas tarefas',
+                    msg: error.data.content,
                     time: 3000
                 })
 
@@ -134,8 +144,25 @@ class Tasks extends Component {
                 <Timer/>
 
                 <form className="form-add-task" onSubmit={this.saveTask}>
-                    <input type="text" name='task' value={this.state.task} onChange={this.handleNameTask}/>
-                    <button type='submit'> +</button>
+
+                    <Grid container>
+                        <Grid item xs={11} md={11} lg={11}>
+                            <FormGroup>
+                                <FormControl>
+                                    <TextField
+                                        label="Adicione sua nova tarefa aqui"
+                                        name='task'
+                                        value={this.state.task}
+                                        onChange={this.handleNameTask}
+                                        required={true}
+                                    />
+                                </FormControl>
+                            </FormGroup>
+                        </Grid>
+                        <Grid item xs={1} md={1} lg={1}>
+                            <button type='submit'> +</button>
+                        </Grid>
+                    </Grid>
                 </form>
 
                 <ul className="tasks">
@@ -150,8 +177,13 @@ class Tasks extends Component {
                     }
 
                 </ul>
-                <hr/>
-                <h2>Completas</h2>
+
+                <Divider />
+
+                <p className="spacer-title">
+                    Concluídas
+                </p>
+
                 <ul className="tasks completed">
 
                     {

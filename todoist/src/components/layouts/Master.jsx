@@ -10,9 +10,11 @@ const MasterLayout = (props) => (
         <CssBaseline/>
         <Header/>
 
-        <Container>
-            {props.children}
-        </Container>
+        <div className="wrapper-container">
+            <Container>
+                {props.children}
+            </Container>
+        </div>
 
         <Footer/>
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Libraries\Slack\Slack;
 use App\Models\Task;
+use App\Traits\ResponseTrait;
+use App\Traits\ValidationTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +17,9 @@ use Illuminate\Support\Facades\DB;
 class TaskController extends Controller
 {
 
+    use ValidationTrait,
+        ResponseTrait;
+
     const LIMIT_TASKS = 10;
 
     /**
@@ -25,8 +30,13 @@ class TaskController extends Controller
 
         try {
 
-            $tasks = Task::where('status', Task::STATUS_INCOMPLETE)->orderBy('id',
-                'DESC')->limit(self::LIMIT_TASKS)->get();
+            $user = \JWTAuth::parseToken()->toUser();
+
+            $tasks = $user->task()
+                ->where('status', Task::STATUS_INCOMPLETE)
+                ->orderBy('id', 'DESC')
+                ->limit(self::LIMIT_TASKS)
+                ->get();
 
             return response()->json([
                 'error'   => false,
@@ -50,8 +60,13 @@ class TaskController extends Controller
 
         try {
 
-            $tasks = Task::where('status', Task::STATUS_COMPLETE)->orderBy('id',
-                'DESC')->limit(self::LIMIT_TASKS)->get();
+            $user = \JWTAuth::parseToken()->toUser();
+
+            $tasks = $user->task()
+                ->where('status', Task::STATUS_COMPLETE)
+                ->orderBy('id', 'DESC')
+                ->limit(self::LIMIT_TASKS)
+                ->get();
 
             return response()->json([
                 'error'   => false,
@@ -77,6 +92,10 @@ class TaskController extends Controller
 
         try {
 
+            $this->validator($request->all(), [
+                'id' => 'required|integer'
+            ]);
+
             $task = Task::findOrFail($request->get('id'));
 
             if (!$task) {
@@ -87,9 +106,11 @@ class TaskController extends Controller
             }
 
             if ($task->status === 'C') {
-                $task->status = 'I';
+                $task->conclusion_date = null;
+                $task->status          = 'I';
             } else {
-                $task->status = 'C';
+                $task->conclusion_date = Carbon::now();
+                $task->status          = 'C';
             }
 
             $task->save();
@@ -124,8 +145,11 @@ class TaskController extends Controller
     {
 
         try {
-
             DB::beginTransaction();
+
+            $this->validator($request->all(), [
+                'description' => 'required'
+            ]);
 
             Task::create([
                 'description' => $request->get('task')
@@ -143,12 +167,102 @@ class TaskController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'error'   => true,
                 'content' => 'Error: ' . $e->getMessage()
             ]);
         }
 
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Request $request)
+    {
+
+        try {
+            DB::beginTransaction();
+
+            $this->validator($request->all(), [
+                'id' => 'required'
+            ]);
+
+            $user = \JWTAuth::parseToken()->toUser();
+
+            $task = $user->task()->find($request->get('id'));
+
+            if (!$task) {
+                return response()->json([
+                    'error'   => true,
+                    'content' => 'Tarefa não encontrada'
+                ]);
+            }
+
+            $task->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'error'   => false,
+                'content' => 'Tarefa foi excluida'
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return $this->responseJson(true, 'Não foi possível remover a atividade', 500);
+        }
+
+    }
+
+    /**
+     * @param                          $id
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update($id, Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->validator($request->all(), [
+                'description' => 'required'
+            ]);
+
+            $user = \JWTAuth::parseToken()->toUser();
+
+            $task = $user->task()->find($id);
+
+            if (!$task) {
+                return response()->json([
+                    'error'   => true,
+                    'content' => 'Tarefa não encontrada'
+                ]);
+            }
+
+            $task->description = $request->get('description');
+            $task->save();
+
+            DB::commit();
+
+            return response()->json([
+                'error'   => false,
+                'content' => 'Tarefa alterada'
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return $this->responseJson(true, 'Não foi possível alterar a atividade', 500, $e);
+        }
     }
 
 }

@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
-// import 'react-toastify/dist/ReactToastify.css'
 import api from '../../services/api'
 import {login} from '../../services/auth'
-import {Form, Container} from './Styles'
 import {ApiRouteList} from '../../routes.js'
-
-// import {ToastContainer, toast} from 'react-toastify'
+import {Grid, FormControl, FormGroup, TextField} from "@material-ui/core"
+import iconSystem from '../../assets/img/clock.svg'
 
 class Login extends Component {
 
@@ -22,15 +20,6 @@ class Login extends Component {
         password: '',
         error: ''
     }
-
-    // notify = (msg) => toast(msg, {
-    //     position: "bottom-right",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    // });
 
     handleSignIn = async e => {
         e.preventDefault()
@@ -55,8 +44,6 @@ class Login extends Component {
                     }
 
                     login(response.data.token, response.data.expires_in)
-
-                    //@TODO Colocar tooltip aqui para exibir que foi feito login
 
                     this.props.history.push({
                         pathname: '/app',
@@ -96,38 +83,59 @@ class Login extends Component {
 
     render() {
         return (
-            <Container>
-                <Form onSubmit={this.handleSignIn}>
-                    {/* @TODO criar logo */}
+            <div className="form-login">
+                <form onSubmit={this.handleSignIn}>
+                    <Grid container alignContent={"center"} alignItems={"center"}>
 
-                    {this.state.error && <p>{this.state.error}</p>}
+                        <Grid item xs={12} md={12} lg={12}>
+                            <img src={iconSystem} alt="Ícone do sistema" className="icon"/>
+                        </Grid>
 
-                    <input
-                        type="email"
-                        placeholder="Endereço de e-mail"
-                        onChange={e => this.setState({email: e.target.value})}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Senha"
-                        onChange={e => this.setState({password: e.target.value})}
-                    />
-                    <button type="submit">Entrar</button>
-                    <hr/>
-                    <Link to="/signup">Criar conta grátis</Link>
-                </Form>
-                {/*@TODO colocar Toast*/}
-                {/*<ToastContainer*/}
-                {/*    position="bottom-right"*/}
-                {/*    autoClose={5000}*/}
-                {/*    hideProgressBar={false}*/}
-                {/*    newestOnTop={false}*/}
-                {/*    closeOnClick*/}
-                {/*    rtl={false}*/}
-                {/*    pauseOnVisibilityChange*/}
-                {/*    draggable*/}
-                {/*    pauseOnHover/>*/}
-            </Container>
+                        <Grid item xs={12} md={12} lg={12}>
+                            {this.state.error && <div className="error-message">{this.state.error}</div>}
+                        </Grid>
+
+                        <Grid item xs={12} md={12} lg={12}>
+                            <FormGroup>
+                                <FormControl>
+                                    <TextField
+                                        label="Endereço de e-mail"
+                                        name="email"
+                                        type="email"
+                                        value={this.state.password_confirmation}
+                                        onChange={e => this.setState({email: e.target.value})}
+                                    />
+                                </FormControl>
+                            </FormGroup>
+                        </Grid>
+
+                        <Grid item xs={12} md={12} lg={12}>
+                            <FormGroup>
+                                <FormControl>
+                                    <TextField
+                                        label="Senha"
+                                        type="password"
+                                        name="password"
+                                        onChange={e => this.setState({password: e.target.value})}
+                                    />
+                                </FormControl>
+                            </FormGroup>
+                        </Grid>
+
+                        <Grid item xs={12} md={12} lg={12} >
+                            <button
+                                type="submit">
+                                Entrar
+                            </button>
+                        </Grid>
+
+                        <Grid item xs={12} md={12} lg={12}>
+                            <div className="link-create"><Link to="/signup">Criar conta grátis</Link></div>
+                        </Grid>
+
+                    </Grid>
+                </form>
+            </div>
         );
     }
 }

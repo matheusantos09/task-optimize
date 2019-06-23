@@ -77,10 +77,18 @@ class Configuration extends Component {
         })
     }
 
+    handleOnChangeSwitch = (type, event) => {
+        this.setState({
+            [type]: event.target.checked
+        });
+    };
+
     handleSubmit(e) {
         e.preventDefault();
 
         const {name, email, password, password_confirmation, slack_snooze, slack_token, notification_email, notification_news} = this.state;
+
+        console.log(this.state);
 
         api.post(ApiRouteList.saveConfigUser, {
             name,
@@ -110,8 +118,6 @@ class Configuration extends Component {
 
             }.bind(this))
             .catch(function (error) {
-                console.log('CATCH');
-                console.log(error);
 
                 notify({
                     status: 'error',
@@ -197,6 +203,9 @@ class Configuration extends Component {
                                             <Grid item>
                                                 <Switch
                                                     name="slack_snooze"
+                                                    value={[true, false]}
+                                                    checked={this.state.slack_snooze ? true : false}
+                                                    onChange={(event) => this.handleOnChangeSwitch('slack_snooze', event)}
                                                 />
                                             </Grid>
                                             <Grid item>Sim</Grid>
@@ -214,6 +223,8 @@ class Configuration extends Component {
                                     <TextField
                                         label="Slack Token"
                                         name="slack_token"
+                                        value={this.state.slack_token}
+                                        onChange={(event) => this.handleOnChange('slack_token', event)}
                                     />
                                 </FormControl>
                                 <FormHelperText>Para adquirir esse token <Link
@@ -237,6 +248,8 @@ class Configuration extends Component {
                                             <Grid item>
                                                 <Switch
                                                     name="notification_email"
+                                                    checked={this.state.notification_email ? true : false}
+                                                    onChange={(event) => this.handleOnChangeSwitch('notification_email', event)}
                                                 />
                                             </Grid>
                                             <Grid item>Sim</Grid>
@@ -246,6 +259,7 @@ class Configuration extends Component {
                                     label="Receba e-mail com suas tarefas e progressos"
                                     labelPlacement="top"
                                 />
+                                <FormHelperText>*Função ainda não disponivel, desculpe, estamos trabalhando para implementar isso.</FormHelperText>
                             </FormGroup>
                         </Grid>
                         <Grid item xs={12} sm={12} md={6}>
@@ -257,6 +271,8 @@ class Configuration extends Component {
                                             <Grid item>
                                                 <Switch
                                                     name="notification_news"
+                                                    checked={this.state.notification_news ? true : false}
+                                                    onChange={(event) => this.handleOnChangeSwitch('notification_news', event)}
                                                 />
                                             </Grid>
                                             <Grid item>Sim</Grid>
@@ -265,6 +281,7 @@ class Configuration extends Component {
                                     label="Recebas nossas novas atualizações da plataforma"
                                     labelPlacement="top"
                                 />
+                                <FormHelperText>*Função ainda não disponivel, assim que os novos recursos estiverem prontos você será notificado.</FormHelperText>
                             </FormGroup>
                         </Grid>
 

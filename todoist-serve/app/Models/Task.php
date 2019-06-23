@@ -11,6 +11,6 @@ class Task extends Model
         STATUS_INCOMPLETE = 'I';
 
     protected $table    = 'tasks';
-    protected $fillable = ['description', 'status'];
+    protected $fillable = ['description', 'status', 'conclusion_date'];
 
 }

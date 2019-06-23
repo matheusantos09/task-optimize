@@ -29,7 +29,9 @@ Route::group([
     Route::get('/task', 'TaskController@tasks');
     Route::get('/task/completed', 'TaskController@tasksCompleted');
     Route::post('/task/save', 'TaskController@store');
+    Route::put('/task/edit/{id}', 'TaskController@update');
     Route::post('/change-task', 'TaskController@changeTask');
+    Route::delete('/task/destroy', 'TaskController@destroy');
 
     /* Timer Events */
     Route::post('/timer-event', 'TimerEventController@store');
@@ -39,4 +41,8 @@ Route::group([
     Route::post('/user/save', 'UserController@saveConfigs');
     Route::post('/user/snooze/start', 'UserController@startSnooze');
     Route::post('/user/snooze/end', 'UserController@endSnooze');
+
+    /* Frases */
+    Route::post('/phase/random', 'FraseController@random');
+
 });

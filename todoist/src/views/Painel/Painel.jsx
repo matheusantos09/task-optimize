@@ -8,8 +8,10 @@ class Painel extends Component {
         return (
             <MasterLayout>
 
-                <Link to='/app/solo'> Solo </Link>
-                <Link to='/app/grupo'> Grupo </Link>
+                <div className="lista-botoes">
+                    <Link to='/app/solo'> Solo </Link>
+                    <Link to='/app/grupo'> Grupo </Link>
+                </div>
 
             </MasterLayout>
         )

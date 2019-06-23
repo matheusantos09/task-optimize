@@ -37,7 +37,7 @@ class CounterCycleTimer extends Component {
                 <ul>
                     {rows}
                 </ul>
-                <div className="alert-pause">{pause}</div>
+                {pause && <div className="alert-pause">{pause}</div>}
             </div>
         )
     }

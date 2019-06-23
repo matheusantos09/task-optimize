@@ -12,5 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 //        factory(\App\Models\Task::class, 50)->create();
+//        $this->call(FraseSeeder::class);
     }
 }

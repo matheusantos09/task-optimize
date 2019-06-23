@@ -14,16 +14,16 @@ trait ValidationTrait
 {
 
     /**
-     * @param      $request
-     * @param      $rules
-     * @param null $messages
+     * @param       $request
+     * @param       $rules
+     * @param array $messages
      *
      * @throws \Exception
      */
-    public function validator($request, $rules, $messages = null)
+    public function validator($request, $rules, $messages = [])
     {
 
-        $validator = Validator::make($request, $rules);
+        $validator = Validator::make($request, $rules, $messages);
 
         if ($validator->fails()) {
             $msgReturn = '';

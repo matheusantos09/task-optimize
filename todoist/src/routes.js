@@ -9,6 +9,8 @@ import App from './views/Painel/Painel'
 import Solo from './views/Solo/Solo'
 import Grupo from './views/Grupo/Grupo'
 import Configuration from './views/User/Configuration'
+import NotFound from './views/NotFound/NotFound'
+import Logout from './views/Logout/Logout'
 
 const AppNameRoute = '/app';
 
@@ -52,35 +54,43 @@ export const ApiRouteList = {
     signup: '/auth/signup',
     tasks: '/auth/task',
     completedTasks: '/auth/task/completed',
-    changeStatus: '/auth/change-task',
     saveTask: '/auth/task/save',
+    taskDestroy: '/auth/task/destroy',
+    changeStatus: '/auth/change-task',
+    taskUpdate: '/auth/task/edit/',
     eventTimer: '/auth/timer-event',
     saveConfigUser: '/auth/user/save',
     loadConfigUser: '/auth/user/load',
     startSnooze: '/auth/user/snooze/start',
     endSnooze: '/auth/user/snooze/end',
+    randomPhase: '/auth/phase/random'
 }
 
 export const MenuSolo = [
     {
         path: AppNameRoute + '/user',
-        name: 'Sobre mim'
+        name: 'Minha Conta',
+        icon: 'configuration',
     },
     {
         path: AppNameRoute + '/solo/notifications',
         name: 'Notificações',
+        icon: 'notification',
     },
     {
         path: AppNameRoute + '/solo',
-        name: 'Solo'
+        name: 'Solo',
+        icon: 'solo',
     },
     {
         path: AppNameRoute + '/grupo',
-        name: 'Grupo'
+        name: 'Grupo',
+        icon: 'group',
     },
     {
         path: '/logout',
-        name: 'Logout'
+        name: 'Logout',
+        icon: 'logout',
     },
 ]
 
@@ -107,7 +117,8 @@ const Routes = () => (
             <PrivateRoute exact path={RouteList.painelSolo.path} component={Solo}/>
             <PrivateRoute exact path={RouteList.painelGrupo.path} component={Grupo}/>
             <PrivateRoute exact path={RouteList.configuration.path} component={Configuration}/>
-            <Route path='*' component={() => <h1>Página não encontrada</h1>}/>
+            <PrivateRoute exact path={RouteList.logout.path} component={Logout}/>
+            <Route path='*' component={NotFound}/>
         </Switch>
     </BrowserRouter>
 );
