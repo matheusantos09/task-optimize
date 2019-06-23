@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Todoist",
+  "name": "Todoist manager tasks and time",
   "icons": [
     {
       "src": "favicon.ico",
