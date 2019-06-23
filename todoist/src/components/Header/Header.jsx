@@ -21,7 +21,8 @@ import {
     AccountCircle,
     Group,
     ExitToApp,
-    Warning
+    Warning,
+    DockRounded
 } from '@material-ui/icons';
 import {MenuSolo} from '../../routes'
 import {Link} from 'react-router-dom'
@@ -125,6 +126,10 @@ export default function PersistentDrawerLeft() {
 
             case 'logout':
                 icon = <ExitToApp />
+                break
+
+            case 'tasks':
+                icon = <DockRounded />
                 break
 
             default:

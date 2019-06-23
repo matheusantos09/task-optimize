@@ -50,7 +50,7 @@ class Footer extends Component {
             <footer>
                 <p>{this.state.phase}</p>
                 <Divider />
-                <p>  &copy; Todos os direitos reservados | Made With Love</p>
+                <p>  &copy; Todos os direitos reservados | Made With <span role="img">❤️</span></p>
             </footer>
         )
     }

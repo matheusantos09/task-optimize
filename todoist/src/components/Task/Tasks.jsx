@@ -3,7 +3,7 @@ import TaskItem from './Task-item'
 import api from "../../services/api";
 import {ApiRouteList} from '../../routes'
 import PubSub from 'pubsub-js'
-import {notify, ToastContainerCustom} from "../Notification/Notify"
+import {notify} from "../Notification/Notify"
 import Timer from '../Timer/Countdown'
 import {TextField, FormGroup, FormControl, Grid} from "@material-ui/core"
 import Divider from "@material-ui/core/Divider";
@@ -196,8 +196,6 @@ class Tasks extends Component {
                     }
 
                 </ul>
-
-                <ToastContainerCustom/>
 
             </div>
         )

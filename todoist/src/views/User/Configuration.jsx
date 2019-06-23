@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import api from "../../services/api";
 import {ApiRouteList} from "../../routes";
-import {notify, ToastContainerCustom} from "../../components/Notification/Notify"
+import {notify} from "../../components/Notification/Notify"
 import imagePerfilDefault from '../../assets/img/user-perfil.svg'
 import loader from '../../assets/img/loader.svg'
 import Divider from "@material-ui/core/Divider";
@@ -386,7 +386,6 @@ class Configuration extends Component {
 
                     </Grid>
                 </form>
-                <ToastContainerCustom/>
             </MasterLayout>
         )
     }

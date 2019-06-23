@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Routes from './routes'
 import './assets/scss/App.scss'
+import {ToastContainerCustom} from "./components/Notification/Notify"
 
 /* Import fonts and styles */
 import 'typeface-roboto'
@@ -13,6 +14,9 @@ class App extends Component {
         return (
             <div>
                 <Routes/>
+
+                <ToastContainerCustom/>
+
             </div>
         );
     }

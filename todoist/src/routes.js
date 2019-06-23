@@ -11,8 +11,11 @@ import Grupo from './views/Grupo/Grupo'
 import Configuration from './views/User/Configuration'
 import NotFound from './views/NotFound/NotFound'
 import Logout from './views/Logout/Logout'
+import Notification from './views/Notification/Notification'
+import Tasks from './views/Tasks/Tasks'
 
-const AppNameRoute = '/app';
+const AppNameRoute = '/app'
+const AuthRoutesPrefix = '/auth'
 
 export const RouteList = {
     login: {
@@ -21,7 +24,8 @@ export const RouteList = {
     },
     logout: {
         path: '/logout',
-        name: 'Logout'
+        name: 'Logout',
+        icon: 'logout',
     },
     signup: {
         path: '/signup',
@@ -34,64 +38,80 @@ export const RouteList = {
     painelSolo: {
         path: AppNameRoute + '/solo',
         name: 'Solo',
+        icon: 'solo',
     },
     notifications: {
-        path: AppNameRoute + '/solo/notifications',
-        name: 'Notificações'
-    },
-    painelGrupo: {
-        path: AppNameRoute + '/grupo',
-        name: 'Grupo'
-    },
-    configuration: {
-        path: AppNameRoute + '/user',
-        name: 'Configurações'
-    },
-}
-
-export const ApiRouteList = {
-    login: '/auth/login',
-    signup: '/auth/signup',
-    tasks: '/auth/task',
-    completedTasks: '/auth/task/completed',
-    saveTask: '/auth/task/save',
-    taskDestroy: '/auth/task/destroy',
-    changeStatus: '/auth/change-task',
-    taskUpdate: '/auth/task/edit/',
-    eventTimer: '/auth/timer-event',
-    saveConfigUser: '/auth/user/save',
-    loadConfigUser: '/auth/user/load',
-    startSnooze: '/auth/user/snooze/start',
-    endSnooze: '/auth/user/snooze/end',
-    randomPhase: '/auth/phase/random',
-    userUploadImage: '/auth/user/upload'
-}
-
-export const MenuSolo = [
-    {
-        path: AppNameRoute + '/user',
-        name: 'Minha Conta',
-        icon: 'configuration',
-    },
-    {
-        path: AppNameRoute + '/solo/notifications',
+        path: AppNameRoute + '/notifications',
         name: 'Notificações',
         icon: 'notification',
     },
-    {
-        path: AppNameRoute + '/solo',
-        name: 'Solo',
-        icon: 'solo',
+    tasks: {
+        path: AppNameRoute + '/tasks',
+        name: 'Tarefas',
+        icon: 'tasks',
     },
-    {
+    painelGrupo: {
         path: AppNameRoute + '/grupo',
         name: 'Grupo',
         icon: 'group',
     },
+    configuration: {
+        path: AppNameRoute + '/user',
+        name: 'Configurações',
+        icon: 'configuration',
+    },
+}
+
+export const ApiRouteList = {
+    login: AuthRoutesPrefix + '/login',
+    signup: AuthRoutesPrefix + '/signup',
+    tasks: AuthRoutesPrefix + '/task',
+    tasksList: AuthRoutesPrefix + '/task-list',
+    completedTasks: AuthRoutesPrefix + '/task/completed',
+    saveTask: AuthRoutesPrefix + '/task/save',
+    taskDestroy: AuthRoutesPrefix + '/task/destroy',
+    changeStatus: AuthRoutesPrefix + '/change-task',
+    taskUpdate: AuthRoutesPrefix + '/task/edit/',
+    eventTimer: AuthRoutesPrefix + '/timer-event',
+    saveConfigUser: AuthRoutesPrefix + '/user/save',
+    loadConfigUser: AuthRoutesPrefix + '/user/load',
+    startSnooze: AuthRoutesPrefix + '/user/snooze/start',
+    endSnooze: AuthRoutesPrefix + '/user/snooze/end',
+    randomPhase: AuthRoutesPrefix + '/phase/random',
+    userUploadImage: AuthRoutesPrefix + '/user/upload',
+    notificationIndex: AuthRoutesPrefix + '/notification'
+}
+
+export const MenuSolo = [
     {
-        path: '/logout',
-        name: 'Logout',
-        icon: 'logout',
+        path: RouteList.configuration.path,
+        name: RouteList.configuration.name,
+        icon: RouteList.configuration.icon,
+    },
+    {
+        path: RouteList.tasks.path,
+        name: RouteList.tasks.name,
+        icon: RouteList.tasks.icon,
+    },
+    {
+        path: RouteList.notifications.path,
+        name: RouteList.notifications.name,
+        icon: RouteList.notifications.icon,
+    },
+    {
+        path: RouteList.painelSolo.path,
+        name: RouteList.painelSolo.name,
+        icon: RouteList.painelSolo.icon,
+    },
+    {
+        path: RouteList.painelGrupo.path,
+        name: RouteList.painelGrupo.name,
+        icon: RouteList.painelGrupo.icon,
+    },
+    {
+        path: RouteList.logout.path,
+        name: RouteList.logout.name,
+        icon: RouteList.logout.icon,
     },
 ]
 
@@ -118,6 +138,8 @@ const Routes = () => (
             <PrivateRoute exact path={RouteList.painelSolo.path} component={Solo}/>
             <PrivateRoute exact path={RouteList.painelGrupo.path} component={Grupo}/>
             <PrivateRoute exact path={RouteList.configuration.path} component={Configuration}/>
+            <PrivateRoute exact path={RouteList.notifications.path} component={Notification}/>
+            <PrivateRoute exact path={RouteList.tasks.path} component={Tasks}/>
             <PrivateRoute exact path={RouteList.logout.path} component={Logout}/>
             <Route path='*' component={NotFound}/>
         </Switch>
