@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Frase;
 use Illuminate\Http\Request;
 
-class FraseController extends Controller
+class PhaseController extends Controller
 {
     /**
      * Display a listing of the resource.
